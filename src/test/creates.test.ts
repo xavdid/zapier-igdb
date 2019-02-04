@@ -1,5 +1,3 @@
-import should = require('should')
-
 import { createAppTester, tools } from 'zapier-platform-core'
 tools.env.inject()
 
@@ -7,7 +5,7 @@ import App from '../index'
 const appTester = createAppTester(App)
 
 describe.only('Creates', () => {
-  it('should fetch data for a steam game', async () => {
+  test('should fetch data for a steam game', async () => {
     const bundle = {
       authData: {
         userKey: process.env.USER_KEY as string
@@ -22,8 +20,8 @@ describe.only('Creates', () => {
       bundle
     )
 
-    response.id.should.equal(27328)
-    response.steamId.should.equal('583270')
-    should.exist(response.images.cover)
+    expect(response.id).toBe(27328)
+    expect(response.steamId).toBe('583270')
+    expect(response.images.cover).toBeDefined()
   })
 })

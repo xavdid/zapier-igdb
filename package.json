@@ -8,13 +8,12 @@
   "license": "BSD-3-Clause",
   "main": "index.js",
   "scripts": {
-    "zapier-build": "tsc",
     "zapier-dev": "tsc --watch",
-    "zapier-push": "npm run zapier-build && zapier push",
-    "prepare": "npm run zapier-build",
-    "pretest": "npm run zapier-build",
-    "test": "mocha --recursive lib/test",
-    "build": "npm run zapier-build"
+    "zapier-push": "npm run build && zapier push",
+    "prepare": "npm run build",
+    "pretest": "npm run build",
+    "test": "jest lib/test",
+    "build": "tsc"
   },
   "engines": {
     "node": "8.10.0",
@@ -24,11 +23,9 @@
     "zapier-platform-core": "7.6.1"
   },
   "devDependencies": {
-    "@types/mocha": "5.2.0",
+    "@types/jest": "23.3.13",
     "@types/node": "10.1.2",
-    "@types/should": "13.0.0",
-    "mocha": "5.1.0",
-    "should": "13.2.1",
+    "jest": "24.0.0",
     "typescript": "2.8.3"
   }
 }
