@@ -2,10 +2,11 @@ import Authentication from './authentication'
 const { version } = require('../package.json')
 import { version as platformVersion } from 'zapier-platform-core'
 
+import findGame from './searches/findGame'
+
 import fetchGame from './creates/fetchGame'
 import fetchCompany from './creates/fetchCompany'
-
-process.version
+import fetchGameBySteamId from './creates/fetchGameBySteamId'
 
 const App = {
   version,
@@ -21,11 +22,14 @@ const App = {
 
   triggers: {},
 
-  searches: {},
+  searches: {
+    [findGame.key]: findGame
+  },
 
   creates: {
     [fetchGame.key]: fetchGame,
-    [fetchCompany.key]: fetchCompany
+    [fetchCompany.key]: fetchCompany,
+    [fetchGameBySteamId.key]: fetchGameBySteamId
   }
 }
 

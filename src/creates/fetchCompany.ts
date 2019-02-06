@@ -3,11 +3,9 @@ import { endpoint } from '../utils'
 
 interface CompanyResponse {
   id: number
+  name: string
   developed: number[]
-  logo: {
-    id: number
-    image_id: string
-  }
+  logoUrl?: string // added by me
 }
 
 export default {
@@ -28,7 +26,7 @@ export default {
     perform: async (z: ZObject, bundle: Bundle) => {
       const rawResult = await z.request(endpoint('companies'), {
         method: 'POST',
-        body: `fields id, developed, published, logo.image_id; where developed=(${
+        body: `fields id, name, developed, published; where developed=(${
           bundle.inputData.igdbId
         }) | published=(${bundle.inputData.igdbId});`,
         headers: { 'user-key': bundle.authData.userKey }

@@ -1,12 +1,10 @@
 import { ZObject, Bundle } from 'zapier-platform-core'
-import { endpoint, imageUrl, IMAGE_SIZES } from '../utils'
-
-const STEAM_CATEGORY = 13
+import { endpoint, imageUrl, IMAGE_SIZES, STEAM_CATEGORY } from '../utils'
 
 interface GameRespone {
   id: number
   name: string
-  cover: {
+  cover?: {
     id: number
     image_id: string
   }
@@ -45,8 +43,9 @@ export default {
       const res = {
         id: result.id,
         images: {
-          cover: imageUrl(result.cover.image_id, IMAGE_SIZES.Cover),
-          screenshot: imageUrl(result.cover.image_id, IMAGE_SIZES.Screenshot)
+          cover: result.cover
+            ? imageUrl(result.cover.image_id, IMAGE_SIZES.Cover)
+            : ''
         },
         steamId: '',
         name: result.name,
@@ -60,6 +59,10 @@ export default {
         const maybeSteamId = steamListing.url.match(/ered.com\/app\/(\d+)/)
         if (maybeSteamId) {
           res.steamId = maybeSteamId[1]
+          // steam has better images and these are the big nice ones (not the small bad ones I've been grabbing)
+          res.images.cover = `https://steamcdn-a.akamaihd.net/steam/apps/${
+            maybeSteamId[1]
+          }/header.jpg`
         }
       }
 
