@@ -1,7 +1,9 @@
 import Authentication from './authentication'
 const { version } = require('../package.json')
 import { version as platformVersion } from 'zapier-platform-core'
-import FetchGameData from './creates/fetchGame'
+
+import fetchGame from './creates/fetchGame'
+import fetchCompany from './creates/fetchCompany'
 
 process.version
 
@@ -21,7 +23,10 @@ const App = {
 
   searches: {},
 
-  creates: { [FetchGameData.key]: FetchGameData }
+  creates: {
+    [fetchGame.key]: fetchGame,
+    [fetchCompany.key]: fetchCompany
+  }
 }
 
 export default App

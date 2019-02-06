@@ -1,4 +1,5 @@
 import { ZObject, Bundle } from 'zapier-platform-core'
+import { endpoint, imageUrl, IMAGE_SIZES } from '../utils'
 
 const STEAM_CATEGORY = 13
 
@@ -9,23 +10,14 @@ interface GameRespone {
     id: number
     image_id: string
   }
-  websites: Array<{
+  websites?: Array<{
     id: number
     category: number
     trusted: boolean
     url: string
   }>
+  collection?: { id: number; name: string }
 }
-
-enum IMAGE_SIZES {
-  Screenshot = 'screenshot_med',
-  Cover = 'cover_big',
-  Logo = 'logo_med'
-}
-
-const endpoint = (path: string) => `https://api-v3.igdb.com/${path}`
-const imageUrl = (imageId: string, size: IMAGE_SIZES) =>
-  `https://images.igdb.com/igdb/image/upload/t_${size}/${imageId}.jpg`
 
 export default {
   key: 'fetchGameData',
@@ -38,10 +30,11 @@ export default {
 
   operation: {
     inputFields: [{ key: 'slug', type: 'string', required: true }],
-    perform: async (z: ZObject, bundle: Bundle<{ slug: string }>) => {
+    // bundle: <{ slug: string }>
+    perform: async (z: ZObject, bundle: Bundle) => {
       const rawResult = await z.request(endpoint('games'), {
         method: 'POST',
-        body: `fields id, name, cover.image_id, websites.*; where slug = "${
+        body: `fields id, name, cover.image_id, websites.*, collection.name; where slug = "${
           bundle.inputData.slug
         }";`,
         headers: { 'user-key': bundle.authData.userKey }
@@ -56,10 +49,11 @@ export default {
           screenshot: imageUrl(result.cover.image_id, IMAGE_SIZES.Screenshot)
         },
         steamId: '',
-        name: result.name
+        name: result.name,
+        series: result.collection
       }
 
-      const steamListing = result.websites.filter(
+      const steamListing = (result.websites || []).filter(
         w => w.category === STEAM_CATEGORY
       )[0]
       if (steamListing) {
