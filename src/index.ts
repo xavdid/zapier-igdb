@@ -1,11 +1,12 @@
-import Authentication from './authentication'
-const { version } = require('../package.json')
 import { version as platformVersion } from 'zapier-platform-core'
+const { version } = require('../package.json')
+
+import Authentication from './authentication'
 
 import findGame from './searches/findGame'
 
-import fetchGame from './creates/fetchGame'
-import fetchCompany from './creates/fetchCompany'
+import fetchGameData from './creates/fetchGame'
+import fetchCompanyData from './creates/fetchCompany'
 import fetchGameBySteamId from './creates/fetchGameBySteamId'
 
 const App = {
@@ -27,9 +28,9 @@ const App = {
   },
 
   creates: {
-    [fetchGame.key]: fetchGame,
-    [fetchCompany.key]: fetchCompany,
-    [fetchGameBySteamId.key]: fetchGameBySteamId
+    fetchGameData,
+    fetchCompanyData,
+    fetchGameBySteamId
   }
 }
 
