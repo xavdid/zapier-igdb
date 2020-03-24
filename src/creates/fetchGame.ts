@@ -15,7 +15,7 @@ interface GameRespone {
     url: string;
   }>;
   collection?: { id: number; name: string };
-  platforms: number[];
+  platforms?: number[];
 }
 
 export default {
@@ -49,7 +49,7 @@ export default {
         steamId: "",
         name: result.name,
         series: result.collection,
-        windowsOnly: !result.platforms.includes(14)
+        windowsOnly: !result.platforms?.includes(14) // magic number for the mac platform
       };
 
       const steamListing = (result.websites || []).filter(
