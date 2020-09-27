@@ -34,8 +34,8 @@ export default {
       const rawResult = await z.request(endpoint("games"), {
         method: "POST",
         body: `fields id, name, cover.image_id, websites.*, collection.name, platforms; where slug = "${bundle.inputData.slug}";`,
-        headers: { "user-key": bundle.authData.userKey }
       });
+      rawResult.throwForStatus()
 
       const result = (rawResult.json as GameRespone[])[0];
 

@@ -24,9 +24,9 @@ export default {
     perform: async (z: ZObject, bundle: Bundle) => {
       const rawResult = await z.request(endpoint('games'), {
         method: 'POST',
-        body: `search "${bundle.inputData.name}"; fields slug;`,
-        headers: { 'user-key': bundle.authData.userKey }
+        body: `search "${bundle.inputData.name}"; fields slug;`
       })
+      rawResult.throwForStatus()
 
       const games = rawResult.json as GameRespone[]
 

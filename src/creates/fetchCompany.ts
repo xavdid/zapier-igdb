@@ -26,11 +26,9 @@ export default {
     perform: async (z: ZObject, bundle: Bundle) => {
       const rawResult = await z.request(endpoint('companies'), {
         method: 'POST',
-        body: `fields id, name, developed, published; where developed=(${
-          bundle.inputData.igdbId
-        }) | published=(${bundle.inputData.igdbId});`,
-        headers: { 'user-key': bundle.authData.userKey }
+        body: `fields id, name, developed, published; where developed=(${bundle.inputData.igdbId}) | published=(${bundle.inputData.igdbId});`
       })
+      rawResult.throwForStatus()
 
       const companies = rawResult.json as CompanyResponse[]
 

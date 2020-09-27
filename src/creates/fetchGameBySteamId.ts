@@ -1,5 +1,5 @@
 import { ZObject, Bundle } from 'zapier-platform-core'
-import { endpoint } from '../utils'
+import { endpoint, STEAM_CATEGORY } from '../utils'
 
 interface GameRespone {
   id: number
@@ -21,11 +21,9 @@ export default {
     perform: async (z: ZObject, bundle: Bundle) => {
       const anchoredTry = await z.request(endpoint('games'), {
         method: 'POST',
-        body: `fields slug; where websites.url ~ *"/${
-          bundle.inputData.steamId
-        }" & websites.category = 13 & websites.url = *"store.steampowered"*;`,
-        headers: { 'user-key': bundle.authData.userKey }
+        body: `fields slug; where websites.url ~ *"/${bundle.inputData.steamId}" & websites.category = 13 & websites.url = *"store.steampowered"*;`
       })
+      anchoredTry.throwForStatus()
 
       const anchoredResult = anchoredTry.json as GameRespone[]
 
@@ -35,11 +33,9 @@ export default {
 
       const unAnchoredTry = await z.request(endpoint('games'), {
         method: 'POST',
-        body: `fields slug; where websites.url ~ *"store.steampowered.com/app/${
-          bundle.inputData.steamId
-        }/"* & websites.category = 13;`,
-        headers: { 'user-key': bundle.authData.userKey }
+        body: `fields slug; where websites.url ~ *"store.steampowered.com/app/${bundle.inputData.steamId}/"* & websites.category = ${STEAM_CATEGORY};`
       })
+      unAnchoredTry.throwForStatus()
 
       const unAnchoredResult = unAnchoredTry.json as GameRespone[]
 
