@@ -17,8 +17,15 @@ const perform = async (z: ZObject, bundle: Bundle) => {
 const Authentication = {
   config: {
     type: 'session',
-    // doesn't actually need any fields
-    // fields: [],
+    // if there are no fields, then it doesn't pick up the auth type
+    fields: [
+      {
+        key: 'whatever',
+        label: "What's your favorite color?",
+        helpText:
+          "This doesn't affect anything, but we need an auth field. Put whatever you'd like!"
+      }
+    ],
     test: (z: ZObject) =>
       z.request({ url: 'https://id.twitch.tv/oauth2/validate' }),
     sessionConfig: {
