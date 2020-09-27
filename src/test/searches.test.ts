@@ -3,13 +3,13 @@ tools.env.inject()
 
 import App from '../index'
 const appTester = createAppTester(App)
-const userKey = process.env.USER_KEY as string
+const access_token = process.env.ACCESS_TOKEN as string
 
 describe('Creates', () => {
   describe('fetchGame', () => {
     test('it should find a bunch of games', async () => {
       const bundle = {
-        authData: { userKey },
+        authData: { access_token },
         inputData: {
           name: 'The Room 2'
         }
@@ -25,7 +25,7 @@ describe('Creates', () => {
 
     test('it should fail to find ambiguous games', async () => {
       const bundle = {
-        authData: { userKey },
+        authData: { access_token },
         inputData: {
           name: 'The Room 2',
           exact: true
@@ -41,9 +41,11 @@ describe('Creates', () => {
 
     test('it should fetch data for a steam game', async () => {
       const bundle = {
-        authData: { userKey },
+        authData: {
+          access_token
+        },
         inputData: {
-          name: 'The Witcher 3: GotY',
+          name: 'The Witcher 3: Game of the Year',
           exact: true
         }
       }
@@ -51,6 +53,7 @@ describe('Creates', () => {
         App.searches.findGame.operation.perform,
         bundle
       )
+      // console.log(response.json)
       expect(response).toBeInstanceOf(Array)
       expect(response.length).toEqual(1)
       expect(response[0].slug).toBeTruthy()

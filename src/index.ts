@@ -13,15 +13,9 @@ const App = {
   version,
   platformVersion,
 
-  authentication: Authentication,
+  authentication: Authentication.config,
 
-  beforeRequest: [],
-
-  afterResponse: [],
-
-  resources: {},
-
-  triggers: {},
+  beforeRequest: Authentication.befores,
 
   searches: {
     [findGame.key]: findGame

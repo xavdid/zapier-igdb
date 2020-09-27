@@ -3,14 +3,14 @@ tools.env.inject()
 
 import App from '../index'
 const appTester = createAppTester(App)
-const userKey = process.env.USER_KEY as string
+const access_token = process.env.ACCESS_TOKEN as string
 
 describe('Creates', () => {
   test('no-op', () => undefined) // jest wants at least 1 test
   describe('fetchGame', () => {
     test('it should fetch data for a steam game', async () => {
       const bundle = {
-        authData: { userKey },
+        authData: { access_token },
         inputData: {
           slug: 'cosmic-express'
         }
@@ -27,7 +27,7 @@ describe('Creates', () => {
     })
     test('it should fetch data for series non-steam game', async () => {
       const bundle = {
-        authData: { userKey },
+        authData: { access_token },
         inputData: {
           slug: 'god-of-war--1'
         }
@@ -46,7 +46,7 @@ describe('Creates', () => {
   describe('fetchCompanies', () => {
     test('it should fetch company data', async () => {
       const bundle = {
-        authData: { userKey },
+        authData: { access_token },
         inputData: {
           igdbId: '19560'
         }
@@ -62,7 +62,7 @@ describe('Creates', () => {
     })
     test('it should fetch raw company data', async () => {
       const bundle = {
-        authData: { userKey },
+        authData: { access_token },
         inputData: {
           igdbId: '19560',
           raw: true
@@ -80,7 +80,7 @@ describe('Creates', () => {
   describe('fetch game by steam', () => {
     test('it should fetch data for a steam game', async () => {
       const bundle = {
-        authData: { userKey },
+        authData: { access_token },
         inputData: {
           steamId: '368340'
         }
@@ -94,7 +94,7 @@ describe('Creates', () => {
   })
   test('it should fail to find data for a non-existant steam game', async () => {
     const bundle = {
-      authData: { userKey },
+      authData: { access_token },
       inputData: {
         steamId: '25'
       }

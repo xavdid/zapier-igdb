@@ -1,25 +1,42 @@
-import { ZObject, Bundle } from 'zapier-platform-core'
+import { ZObject, Bundle, HttpRequestOptions } from 'zapier-platform-core'
 
-const test = async (z: ZObject, bundle: Bundle) => {
+const perform = async (z: ZObject, bundle: Bundle) => {
   const response = await z.request({
-    url: 'https://api-v3.igdb.com/games',
-    headers: { 'user-key': bundle.authData.userKey }
+    url: 'https://id.twitch.tv/oauth2/token',
+    method: 'POST',
+    params: {
+      client_id: process.env.CLIENT_ID,
+      client_secret: process.env.CLIENT_SECRET,
+      grant_type: 'client_credentials'
+    }
   })
-
-  // This method can return any truthy value to indicate the credentials are valid.
-  // Raise an error to show
-  if (response.status === 401) {
-    throw new Error('The API key you supplied is incorrect')
-  }
-  return response
+  response.throwForStatus()
+  return response.json
 }
 
 const Authentication = {
-  type: 'custom',
-  fields: [
-    { key: 'userKey', label: 'API Key', required: true, type: 'string' }
-  ],
-  test
+  config: {
+    type: 'session',
+    // doesn't actually need any fields
+    // fields: [],
+    test: (z: ZObject) =>
+      z.request({ url: 'https://id.twitch.tv/oauth2/validate' }),
+    sessionConfig: {
+      perform
+    }
+  },
+
+  befores: [
+    (request: HttpRequestOptions, z: ZObject, bundle: Bundle) => {
+      request.headers = {
+        ...(request.headers || {}),
+        'client-id': process.env.CLIENT_ID as string,
+        Authorization: `Bearer ${bundle.authData.access_token}`
+      }
+
+      return request
+    }
+  ]
 }
 
 export default Authentication

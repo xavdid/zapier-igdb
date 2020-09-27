@@ -8,18 +8,19 @@ describe('My Test', () => {
   test('should test the auth succeeds', async () => {
     const bundle = {
       authData: {
-        userKey: process.env.USER_KEY as string
+        access_token: process.env.ACCESS_TOKEN as string
       }
     }
 
-    const response = await appTester(App.authentication.test, bundle)
+    const response = (await appTester(App.authentication.test, bundle)) as any
     expect(response.status).toEqual(200)
+    expect(response.json.client_id).toEqual(process.env.CLIENT_ID)
   })
 
   test('should test the auth fails', async () => {
     const bundle = {
       authData: {
-        userKey: 'asdf'
+        access_token: 'asdf'
       }
     }
 
