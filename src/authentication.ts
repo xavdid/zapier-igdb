@@ -1,4 +1,9 @@
-import { ZObject, Bundle, HttpRequestOptions } from 'zapier-platform-core'
+import {
+  ZObject,
+  Bundle,
+  HttpRequestOptions,
+  HttpResponse
+} from 'zapier-platform-core'
 
 const perform = async (z: ZObject, bundle: Bundle) => {
   const response = await z.request({
@@ -42,6 +47,14 @@ const Authentication = {
       }
 
       return request
+    }
+  ],
+  afters: [
+    (response: HttpResponse, z: ZObject, bundle: Bundle) => {
+      if (response.status === 403) {
+        throw new z.errors.RefreshAuthError()
+      }
+      return response
     }
   ]
 }

@@ -16,6 +16,7 @@ const App = {
   authentication: Authentication.config,
 
   beforeRequest: Authentication.befores,
+  afterResponse: Authentication.afters,
 
   searches: {
     [findGame.key]: findGame

@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "zapier-dev": "tsc --watch",
-    "zapier-push": "npm run build && zapier push",
+    "zapier-push": "yarn build && zapier push",
     "lint": "tslint -p .",
     "pretest": "npm run build",
     "test": "jest lib/test",
